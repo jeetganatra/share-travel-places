@@ -1,9 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 
 const placesRoutes = require("./routes/places-routes");
 const usersRoutes = require("./routes/users-routes");
 const HttpError = require("./models/http-error");
+const { Mongoose } = require("mongoose");
 
 const app = express();
 app.use(bodyParser.json());
@@ -24,4 +26,13 @@ app.use((error, req, res, next) => {
   res.json({ message: error.message || "An unknown error occurred!" });
 });
 
-app.listen(5000);
+mongoose
+  .connect(
+    "mongodb://admin-jeet:Ganatra123@cluster0-shard-00-00.ui68v.mongodb.net:27017,cluster0-shard-00-01.ui68v.mongodb.net:27017,cluster0-shard-00-02.ui68v.mongodb.net:27017/place?ssl=true&replicaSet=atlas-9d1vjw-shard-0&authSource=admin&retryWrites=true&w=majority"
+  )
+  .then(() => {
+    app.listen(5000);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
