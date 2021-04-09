@@ -81,7 +81,7 @@ const signup = async (req, res, next) => {
   try {
     token = jwt.sign(
       { userId: createdUser.id, email: createdUser.email },
-      "MY_KEY_JOEKDUM_SECRET_HAI",
+      "supersecret_dont_share",
       { expiresIn: "1h" }
     );
   } catch (err) {
@@ -122,10 +122,10 @@ const login = async (req, res, next) => {
 
   let isValidPassword = false;
   try {
-    isValidPassword = await bcrypt.password(password, existingUser.password);
+    isValidPassword = await bcrypt.compare(password, existingUser.password);
   } catch (err) {
     const error = new HttpError(
-      "Could not log you in, please check your credentials and try again,",
+      "Could not log you in, please check your credentials and try again.",
       500
     );
     return next(error);
@@ -134,7 +134,7 @@ const login = async (req, res, next) => {
   if (!isValidPassword) {
     const error = new HttpError(
       "Invalid credentials, could not log you in.",
-      401
+      403
     );
     return next(error);
   }
@@ -143,12 +143,12 @@ const login = async (req, res, next) => {
   try {
     token = jwt.sign(
       { userId: existingUser.id, email: existingUser.email },
-      "MY_KEY_JOEKDUM_SECRET_HAI",
+      "supersecret_dont_share",
       { expiresIn: "1h" }
     );
   } catch (err) {
     const error = new HttpError(
-      "Loging in failed, please try again later.",
+      "Logging in failed, please try again later.",
       500
     );
     return next(error);

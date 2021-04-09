@@ -36,7 +36,7 @@ const PlaceItem = (props) => {
         "DELETE",
         null,
         {
-          Authorization: "Bear" + auth.token,
+          Authorization: "Bearer " + auth.token,
         }
       );
       props.onDelete(props.id);
@@ -101,7 +101,7 @@ const PlaceItem = (props) => {
               <Button to={`/places/${props.id}`}>EDIT</Button>
             )}
 
-            {auth.isLoggedIn && (
+            {auth.userId === props.creatorId && (
               <Button danger onClick={showDeleteWarningHandler}>
                 DELETE
               </Button>
